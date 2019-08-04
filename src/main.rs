@@ -13,38 +13,45 @@ fn main() {
     // println!("The nuber I've generated is {}", secret_num);
 
     // Set the number of guesses
-    let guesses = 5;
-    for i in 1..guesses {
+    let mut guesses = Some(10);
 
-        // Let's play
-        println!("What is your guess?");
-        let mut guess = String::new();
-        io::stdin()
-            .read_line(&mut guess)
-            .expect("Failed to read line.");
-        // Shadow `guess` as an unsigned 32bit int
-        let guess: u32 = guess.trim().parse()
-            .expect("Please type a number so we can get on with this.");
-        
-        // println!("You guessed: {}", guess);
-
-        match guess.cmp(&secret_num) {
-            Ordering::Less => println!("Too small..."),
-            Ordering::Greater => println!("Too big..."),
-            Ordering::Equal => {
-                println!("You can guess a random number!\nCongrats, I suppose.");
-                break;
+    // Do the thing while guesses > 0
+    while let Some(i) = guesses {
+        // Check if you have no more guesses
+        if i == 0 {
+            println!("NO MORE GUESSES FOR YOU!!!!!!");
+            break;
+        } else {
+            // Let's play
+            println!("What is your guess?");
+            let mut guess = String::new();
+            io::stdin()
+                .read_line(&mut guess)
+                .expect("Failed to read line.");
+            // Shadow `guess` as an unsigned 32bit int
+            let guess: u32 = guess.trim().parse()
+                .expect("Please type a number so we can get on with this.");
+            
+            // println!("You guessed: {}", guess);
+            match guess.cmp(&secret_num) {
+                Ordering::Less => println!("Too small..."),
+                Ordering::Greater => println!("Too big..."),
+                Ordering::Equal => {
+                    println!("You can guess a random number!\nCongrats, I suppose.");
+                    break;
+                }
             }
+            guesses = Some(i - 1);
+            // Print an insult and the number of guesses left
+            println!("{}", insult());
+            println!("You have {} guesses left.\n", i - 1);
         }
-        // Return an insult and the number of guesses left
-        println!("{}", insult());
-        println!("You have {} guesses left.", guesses - i);
     }
 }
 
-// Pick a random insult and return it
+// Pick a random insult and return it as a String
 fn insult() -> String {
-    let insults = [
+    let insults = vec![
         "Did the sun get in your eyes?",
         "Somethingsomething your momma.",
         "Wow. Can't even guess a number.",
