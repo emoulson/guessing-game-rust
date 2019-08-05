@@ -29,8 +29,11 @@ fn main() {
                 .read_line(&mut guess)
                 .expect("Failed to read line.");
             // Shadow `guess` as an unsigned 32bit int
-            let guess: u32 = guess.trim().parse()
-                .expect("Please type a number so we can get on with this.");
+            if guess == "exit"
+            let guess: u32 = match guess.trim().parse() {
+                Ok(num) => num,
+                Err(_) => continue,
+            };
             
             // println!("You guessed: {}", guess);
             match guess.cmp(&secret_num) {
@@ -54,7 +57,7 @@ fn insult() -> String {
     let insults = vec![
         "Did the sun get in your eyes?",
         "Somethingsomething your momma.",
-        "Wow. Can't even guess a number.",
+        "Wow. Can't even guess a number. Psh.",
         "How many guesses do you have left? Not looking good.",
         "Why is this so hard for you?"
     ];
