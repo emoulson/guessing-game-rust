@@ -29,7 +29,6 @@ fn main() {
                 .read_line(&mut guess)
                 .expect("Failed to read line.");
             // Shadow `guess` as an unsigned 32bit int
-            if guess == "exit"
             let guess: u32 = match guess.trim().parse() {
                 Ok(num) => num,
                 Err(_) => continue,
